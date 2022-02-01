@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import uia.com.apimvcrest.modelo.CotizacionModelo;
 import uia.com.apimvcrest.modelo.ItemCotizacionModelo;
+import uia.com.apimvcrest.modelo.PeticionOrdenCompraModelo;
 
 
 /**
@@ -30,6 +31,8 @@ public class GestorCompras {
     //HashMap<Integer, ArrayList<InfoComprasUIA>> misSolicitudesOC;
     HashMap<Integer, Cotizacion> misCotizacionesOrdenCompra;
     ArrayList<CotizacionModelo> miModeloCotizaciones;
+    HashMap<Integer, PeticionOrdenCompra> misPeticionOrdenCompra;
+    ArrayList<PeticionOrdenCompraModelo> miModeloPeticionOrdenCompra;
 
 
     public GestorCompras() throws IOException {
@@ -154,6 +157,41 @@ public class GestorCompras {
         {
             if(this.miModeloCotizaciones.get(i).getId() == id)
                 return this.miModeloCotizaciones.get(i);
+        }
+
+        return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
+    }
+    public void printMiModeloPeticionOrdenCompra()
+    {
+        for(int i=0; i<miModeloPeticionOrdenCompra.size(); i++)
+            miModeloPeticionOrdenCompra.get(i).print();
+
+    }
+
+    public ArrayList<PeticionOrdenCompraModelo> getPeticionOrdenCompra()
+    {
+        miModeloPeticionOrdenCompra = new ArrayList<PeticionOrdenCompraModelo>();
+        for(int i=0; i<misPeticionOrdenCompra.size(); i++)
+        {
+
+            PeticionOrdenCompraModelo item = new PeticionOrdenCompraModelo(misPeticionOrdenCompra.get(i).getId()
+                    , misPeticionOrdenCompra.get(i).getName()
+                    , misPeticionOrdenCompra.get(i).getCodigo()
+                    , misPeticionOrdenCompra.get(i).getUnidad()
+                    , misPeticionOrdenCompra.get(i).getCantidad());
+        }
+
+        return miModeloPeticionOrdenCompra;
+    }
+
+    public Object getPeticionOrdenCompra(int id)
+    {
+        if (this.miModeloPeticionOrdenCompra == null)
+            this.getPeticionOrdenCompra();
+        for(int i=0; i< this.miModeloPeticionOrdenCompra.size(); i++)
+        {
+            if(this.miModeloPeticionOrdenCompra.get(i).getId() == id)
+                return this.miModeloPeticionOrdenCompra.get(i);
         }
 
         return new ResponseEntity<Void>(HttpStatus.NO_CONTENT);
